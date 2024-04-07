@@ -1,0 +1,131 @@
+gsap.registerPlugin(ScrollTrigger, ScrollSmoother)
+
+if (ScrollTrigger.isTouch !== 1) {
+    ScrollSmoother.create({
+        wrapper: '.wrapper',
+        content: '.content',
+        smooth: 1.5,
+        effects: true
+    })
+}
+
+const filterBox = document.querySelectorAll('.box');
+
+document.querySelector('.filter__content').addEventListener('click', (event)=> {
+    if (event.target.tagName !== 'LI') return false;
+
+    let filterClass = event.target.dataset['f']
+
+    filterBox.forEach(elem => {
+        elem.classList.remove('hide');
+        if (!elem.classList.contains(filterClass) && filterClass!== 'All') {
+            elem.classList.add('hide');
+        }
+    })
+})
+
+function makeActive(event) {
+    var previous = document.getElementsByClassName("active");
+    if (previous.length > 0) {
+        previous[0].className = previous[0].className.replace(" active", "");
+    }
+    event.target.className += " active";
+}
+
+window.onscroll = () => {
+    toggleTopButton();
+}
+
+function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleTopButton() {
+    if (document.body.scrollTop > 20 ||
+        document.documentElement.scrollTop > 20) {
+        document.getElementById('back-to-up').classList.remove('d-none');
+    } else {
+        document.getElementById('back-to-up').classList.add('d-none');
+    }
+}
+
+const sideToggle = document.querySelector('.js-side-toggle');
+const side = document.querySelector('.js-side');
+const mainContent = document.querySelector('.js-main');
+
+const product = document.querySelectorAll('.image')
+const view = document.querySelector('.view')
+product.forEach(el => {
+    el.addEventListener('click', function (e) {
+        view.classList.add('active')
+        let img = this.querySelector('img').getAttribute('src')
+        view.querySelector('img').src = img
+    })
+})
+
+// ANIMATION PAGE
+
+const tl = gsap.timeline();
+
+function pageAnimIn(container) {
+    return tl.to(container.querySelector('.prealoader-round'), {
+        scale: 2,
+        duration: .5
+    })
+}
+
+function pageAnimOut(container) {
+    return tl
+        .from(container.querySelector('.prealoader-round'), {
+            scale: 2,
+            duration: .5
+        })
+
+        // .call(animContent, [container])
+}
+
+function pageAnimIn2(container) {
+    return tl
+        .to(container.querySelector('.prealoader--top'), {
+            duration: .8,
+            scaleX: 1,
+            transformOrigin: 'top left'
+        })
+        .to(container.querySelector('.prealoader--bottom'), {
+            duration: .8,
+            scaleX: 1,
+            transformOrigin: 'bottom right'
+        }, '<')
+}
+
+
+function pageAnimOut2(container) {
+    return tl
+        .from(container.querySelector('.prealoader--top'), {
+            duration: .8,
+            scaleX: 1,
+            transformOrigin: 'top right'
+        })
+        .from(container.querySelector('.prealoader--bottom'), {
+            duration: .8,
+            scaleX: 1,
+            transformOrigin: 'bottom left'
+        }, '<')
+        // .call(animContent, [container])
+}
+
+function activeNavItem(data) {
+    document.querySelectorAll('.nav__list-link')
+        .forEach(el => {
+            el.classList.remove('active')
+        })
+
+    data.trigger.classList.add('active')
+}
+
+
+
+
+
+
+
